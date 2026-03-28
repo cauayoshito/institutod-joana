@@ -7,10 +7,11 @@ const revealElements = [...document.querySelectorAll(".reveal")];
 const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
+const marqueeTrack = document.querySelector(".marquee-track");
 
+// ===== Header scroll =====
 function syncHeader() {
   if (!header) return;
-
   if (window.scrollY > 24) {
     header.classList.add("is-scrolled");
   } else {
@@ -23,6 +24,7 @@ if (header) {
   window.addEventListener("scroll", syncHeader, { passive: true });
 }
 
+// ===== Mobile nav toggle =====
 if (toggle && mobileNav) {
   toggle.addEventListener("click", () => {
     const isOpen = mobileNav.classList.toggle("open");
@@ -37,6 +39,7 @@ if (toggle && mobileNav) {
   });
 }
 
+// ===== Copy Pix key =====
 if (copyButton && pixKey) {
   copyButton.addEventListener("click", async () => {
     try {
@@ -46,14 +49,15 @@ if (copyButton && pixKey) {
       setTimeout(() => {
         copyButton.textContent = original;
       }, 1800);
-    } catch (error) {
+    } catch {
       copyButton.textContent = "Copie manualmente";
     }
   });
 }
 
+// ===== Reveal on scroll =====
 function revealImmediately() {
-  revealElements.forEach((element) => element.classList.add("visible"));
+  revealElements.forEach((el) => el.classList.add("visible"));
 }
 
 if (revealElements.length) {
@@ -69,17 +73,22 @@ if (revealElements.length) {
           }
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
-
-    revealElements.forEach((element) => observer.observe(element));
+    revealElements.forEach((el) => observer.observe(el));
   }
 }
 
 if (prefersReducedMotion.addEventListener) {
-  prefersReducedMotion.addEventListener("change", (event) => {
-    if (event.matches) {
-      revealImmediately();
+  prefersReducedMotion.addEventListener("change", (e) => {
+    if (e.matches) revealImmediately();
+    if (marqueeTrack) {
+      marqueeTrack.style.animationPlayState = e.matches ? "paused" : "running";
     }
   });
+}
+
+// ===== Marquee: pause on reduced motion =====
+if (marqueeTrack && prefersReducedMotion.matches) {
+  marqueeTrack.style.animationPlayState = "paused";
 }
