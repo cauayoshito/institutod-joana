@@ -38,6 +38,7 @@
             alt="${ariaHidden ? "" : p.name}"
             loading="lazy"
             decoding="async"
+            style="height:60px;width:auto;max-width:140px;object-fit:contain"
           />
           <figcaption>${p.name}</figcaption>
         </figure>`
