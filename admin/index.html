@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel — Instituto Social D'Joana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0}
+:root{
+  --green:#25b04a;--green-dark:#1c9a3e;--green-hover:#22a445;
+  --green-light:#edf9f2;--green-50:#f0faf4;--green-100:#d1f0dd;
+  --red:#dc4a4a;--red-light:#fef2f2;
+  --amber:#e5930a;--amber-light:#fef9ee;
+  --blue:#1060be;--blue-light:#eef4fc;--blue-50:#f0f5fc;
+  --dark:#0b1e30;--dark-2:#132d44;
+  --text:#1a2d3f;--text-2:#3d5568;--muted:#7b8e9e;--placeholder:#a3b1be;
+  --white:#ffffff;--cream:#faf9f7;--bg:#f5f3f0;
+  --line:#e8e5e0;--line-2:#dbd7d1;
+  --radius:14px;--radius-sm:10px;--radius-xs:6px;--radius-full:9999px;
+  --shadow:0 2px 12px rgba(11,30,48,.06),0 1px 3px rgba(11,30,48,.04);
+  --shadow-md:0 4px 24px rgba(11,30,48,.08),0 1px 4px rgba(11,30,48,.04);
+  --shadow-lg:0 12px 48px rgba(11,30,48,.12),0 2px 8px rgba(11,30,48,.05);
+  --shadow-green:0 4px 16px rgba(37,176,74,.25);
+  --ease:cubic-bezier(.4,0,.2,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:"Nunito",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+::selection{background:rgba(37,176,74,.15)}
+:focus-visible{outline:3px solid rgba(37,176,74,.3);outline-offset:2px;border-radius:4px}
+.serif{font-family:"Fraunces","Georgia",serif}
+
+/* ===== LOGIN ===== */
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--dark);background-image:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(37,176,74,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 20%,rgba(16,96,190,.1) 0%,transparent 60%);position:relative;overflow:hidden}
+.login-screen::before{content:"";position:absolute;top:-20%;right:-20%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(37,176,74,.06) 0%,transparent 70%);pointer-events:none}
+.login-card{background:var(--white);border-radius:24px;padding:48px 44px 44px;width:100%;max-width:400px;box-shadow:var(--shadow-lg);text-align:center;animation:loginIn .5s var(--ease) both}
+@keyframes loginIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.login-logo{height:52px;margin:0 auto 16px;display:block}
+.login-card h1{font-family:"Fraunces",serif;font-size:1.4rem;font-weight:600;color:var(--dark);margin-bottom:4px}
+.login-card .login-sub{color:var(--muted);font-size:.88rem;font-weight:500;margin-bottom:36px}
+.login-field{margin-bottom:20px;text-align:left}
+.login-field label{display:block;font-weight:700;font-size:.78rem;color:var(--text-2);margin-bottom:7px;letter-spacing:.03em;text-transform:uppercase}
+.login-field input{width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:var(--radius-sm);font:inherit;font-size:.95rem;color:var(--text);background:var(--cream);transition:all .2s var(--ease);outline:none}
+.login-field input::placeholder{color:var(--placeholder)}
+.login-field input:focus{border-color:var(--green);background:var(--white);box-shadow:0 0 0 4px rgba(37,176,74,.08)}
+.login-error{background:var(--red-light);color:var(--red);padding:12px 16px;border-radius:var(--radius-sm);font-size:.85rem;font-weight:700;margin-bottom:18px;display:none;border-left:4px solid var(--red);text-align:left}
+.login-error.show{display:block;animation:shake .4s var(--ease)}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border:none;border-radius:var(--radius-sm);font:inherit;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s var(--ease);text-decoration:none;line-height:1.3;white-space:nowrap}
+.btn svg{flex-shrink:0}
+.btn-primary{background:var(--green);color:var(--white)}
+.btn-primary:hover{background:var(--green-hover);box-shadow:var(--shadow-green);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0);box-shadow:none}
+.btn-secondary{background:var(--blue-light);color:var(--blue)}
+.btn-secondary:hover{background:#dde9f7}
+.btn-danger{background:var(--red-light);color:var(--red)}
+.btn-danger:hover{background:#fde8e8}
+.btn-ghost{background:none;color:var(--text-2);border:2px solid var(--line)}
+.btn-ghost:hover{border-color:var(--line-2);background:var(--cream)}
+.btn-sm{padding:8px 16px;font-size:.82rem;border-radius:var(--radius-xs)}
+.btn-block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* ===== ADMIN LAYOUT ===== */
+.admin-app{display:none;min-height:100vh}
+.admin-app.active{display:flex}
+
+/* SIDEBAR */
+.sidebar{width:272px;background:var(--white);border-right:1px solid var(--line);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:30;transition:transform .3s var(--ease);overflow-y:auto}
+.sidebar-top{padding:28px 24px 24px;border-bottom:1px solid var(--line)}
+.sidebar-logo{height:44px;display:block;margin-bottom:6px}
+.sidebar-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--green-light);color:var(--green-dark);border-radius:var(--radius-full);font-size:.7rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.sidebar-badge::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%}
+.sidebar-nav{flex:1;padding:16px 14px}
+.sidebar-nav-label{font-size:.68rem;font-weight:800;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;padding:16px 14px 8px}
+.nav-item{width:100%;text-align:left;display:flex;align-items:center;gap:12px;padding:12px 14px;border:none;background:none;color:var(--text-2);font:inherit;font-size:.92rem;font-weight:600;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s var(--ease);position:relative}
+.nav-item:hover{color:var(--text);background:var(--cream)}
+.nav-item.active{color:var(--green-dark);background:var(--green-50);font-weight:700}
+.nav-item.active::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--green);border-radius:0 3px 3px 0}
+.nav-item svg{flex-shrink:0;width:20px;height:20px;opacity:.55}
+.nav-item.active svg{opacity:1;color:var(--green)}
+.nav-count{margin-left:auto;background:var(--line);color:var(--muted);font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:var(--radius-full);min-width:24px;text-align:center}
+.nav-item.active .nav-count{background:var(--green-100);color:var(--green-dark)}
+.sidebar-bottom{padding:18px 20px;border-top:1px solid var(--line)}
+.sidebar-user{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green-100),var(--blue-50));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-avatar svg{color:var(--green-dark);width:18px;height:18px}
+.sidebar-user-info{min-width:0}
+.sidebar-user-name{font-size:.82rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-user-role{font-size:.72rem;color:var(--muted);font-weight:600}
+.btn-logout{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:none;color:var(--text-2);font:inherit;font-weight:600;font-size:.82rem;cursor:pointer;transition:all .15s var(--ease);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-logout:hover{background:var(--red-light);color:var(--red);border-color:transparent}
+.btn-logout svg{width:16px;height:16px}
+
+/* MAIN */
+.admin-main{flex:1;margin-left:272px;padding:36px 44px;min-height:100vh;max-width:1200px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px}
+.section-header h2{font-family:"Fraunces",serif;font-size:1.55rem;font-weight:600;color:var(--dark);letter-spacing:-.02em}
+.section-header p{color:var(--muted);font-size:.88rem;margin-top:2px}
+
+/* MOBILE */
+.mobile-toggle{display:none;position:fixed;top:14px;left:14px;z-index:50;width:44px;height:44px;background:var(--white);border:1px solid var(--line);border-radius:var(--radius-sm);align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow)}
+.mobile-toggle svg{width:22px;height:22px;color:var(--text)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(11,30,48,.4);backdrop-filter:blur(2px);z-index:25}
+.sidebar-overlay.open{display:block}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);box-shadow:var(--shadow-lg)}.sidebar.open{transform:translateX(0)}
+  .mobile-toggle{display:flex}
+  .admin-main{margin-left:0;padding:76px 18px 32px}
+  .section-header{flex-direction:column;align-items:flex-start}
+  .dash-grid{grid-template-columns:1fr!important}
+  .dash-quick-grid{grid-template-columns:1fr!important}
+  .cards-grid{grid-template-columns:1fr!important}
+  .gallery-admin-grid{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* ===== DASHBOARD ===== */
+.dash-welcome{background:linear-gradient(135deg,var(--dark) 0%,var(--dark-2) 100%);border-radius:18px;padding:36px 40px;margin-bottom:28px;color:var(--white);position:relative;overflow:hidden}
+.dash-welcome::after{content:"";position:absolute;right:-30px;top:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(37,176,74,.2) 0%,transparent 70%);pointer-events:none}
+.dash-welcome h1{font-family:"Fraunces",serif;font-size:1.6rem;font-weight:600;margin-bottom:6px}
+.dash-welcome p{color:rgba(255,255,255,.6);font-size:.92rem;font-weight:500;max-width:420px}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
+.stat-card{background:var(--white);border-radius:var(--radius);padding:24px;border:1px solid var(--line);transition:all .2s var(--ease)}
+.stat-card:hover{border-color:var(--line-2);box-shadow:var(--shadow)}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.stat-icon svg{width:22px;height:22px}
+.stat-icon-green{background:var(--green-50);color:var(--green)}
+.stat-icon-blue{background:var(--blue-50);color:var(--blue)}
+.stat-icon-amber{background:var(--amber-light);color:var(--amber)}
+.stat-number{font-family:"Fraunces",serif;font-size:2rem;font-weight:700;color:var(--dark);line-height:1.1;margin-bottom:4px}
+.stat-label{font-size:.84rem;color:var(--muted);font-weight:600}
+.dash-quick{margin-bottom:8px}
+.dash-quick h3{font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:14px}
+.dash-quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.quick-btn{display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;transition:all .2s var(--ease);text-decoration:none;color:inherit;font:inherit}
+.quick-btn:hover{border-color:var(--green);box-shadow:var(--shadow);transform:translateY(-2px)}
+.quick-btn:active{transform:translateY(0)}
+.quick-icon{width:42px;height:42px;border-radius:10px;background:var(--green-50);color:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.quick-icon svg{width:20px;height:20px}
+.quick-label strong{display:block;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:1px}
+.quick-label span{font-size:.78rem;color:var(--muted);font-weight:500}
+
+/* ===== CARDS ===== */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.content-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:all .2s var(--ease)}
+.content-card:hover{border-color:var(--line-2);box-shadow:var(--shadow-md)}
+.card-media{position:relative;height:180px;background:var(--cream);overflow:hidden}
+.card-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s var(--ease)}
+.content-card:hover .card-media img{transform:scale(1.03)}
+.card-tag{position:absolute;top:12px;left:12px;padding:4px 12px;background:var(--white);border-radius:var(--radius-full);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.card-body{padding:20px}
+.card-body h4{font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:6px;line-height:1.35}
+.card-body .card-desc{font-size:.85rem;color:var(--text-2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:16px}
+.card-meta{font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:16px}
+.card-actions{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:16px}
+.card-actions .btn{flex:1}
+
+/* Partner card horizontal */
+.partner-card{display:flex;align-items:center;gap:20px;padding:20px 24px}
+.partner-logo-wrap{width:72px;height:72px;border-radius:14px;background:var(--cream);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.partner-logo-wrap img{max-width:56px;max-height:56px;object-fit:contain}
+.partner-info{flex:1;min-width:0}
+.partner-info h4{font-size:.95rem;font-weight:700;color:var(--dark);margin-bottom:3px}
+.partner-info p{font-size:.82rem;color:var(--text-2);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.partner-order{font-size:.72rem;color:var(--muted);font-weight:600}
+.partner-actions{display:flex;gap:6px;flex-shrink:0}
+
+/* ===== GALLERY ===== */
+.gallery-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.gallery-card{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--white);border:1px solid var(--line);transition:all .2s var(--ease)}
+.gallery-card:hover{border-color:var(--line-2);box-shadow:var(--shadow-md)}
+.gallery-card img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .3s var(--ease)}
+.gallery-card:hover img{transform:scale(1.03)}
+.gallery-caption{padding:12px 14px;font-size:.82rem;color:var(--text-2);font-weight:600;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,30,48,.5) 0%,transparent 50%);opacity:0;transition:opacity .2s var(--ease);display:flex;align-items:flex-end;justify-content:center;padding:16px;gap:8px}
+.gallery-card:hover .gallery-overlay{opacity:1}
+.gallery-overlay .btn{backdrop-filter:blur(8px);font-size:.8rem;padding:8px 14px}
+
+/* ===== EMPTY ===== */
+.empty{text-align:center;padding:64px 24px;color:var(--muted);background:var(--white);border:2px dashed var(--line);border-radius:var(--radius)}
+.empty-icon{width:64px;height:64px;border-radius:50%;background:var(--green-50);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.empty-icon svg{width:28px;height:28px;color:var(--green);opacity:.6}
+.empty h4{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.empty p{font-size:.88rem;max-width:300px;margin:0 auto 20px;line-height:1.5}
+
+/* ===== MODAL ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(11,30,48,.45);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlide .3s var(--ease-spring) both}
+@keyframes modalSlide{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:28px 32px 0}
+.modal-head h3{font-family:"Fraunces",serif;font-size:1.2rem;font-weight:600;color:var(--dark)}
+.modal-close{width:36px;height:36px;border:none;background:var(--cream);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s var(--ease);color:var(--muted)}
+.modal-close:hover{background:var(--line);color:var(--text)}
+.modal-close svg{width:18px;height:18px}
+.modal-body{padding:24px 32px 32px}
+.form-group{margin-bottom:22px}
+.form-group label{display:block;font-weight:700;font-size:.78rem;color:var(--text-2);margin-bottom:8px;letter-spacing:.03em;text-transform:uppercase}
+.form-input{width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:var(--radius-sm);font:inherit;font-size:.92rem;color:var(--text);background:var(--cream);transition:all .2s var(--ease);outline:none;resize:vertical}
+.form-input::placeholder{color:var(--placeholder)}
+.form-input:focus{border-color:var(--green);background:var(--white);box-shadow:0 0 0 4px rgba(37,176,74,.08)}
+textarea.form-input{min-height:100px}
+.form-hint{font-size:.76rem;color:var(--muted);margin-top:5px;font-weight:500}
+.upload-zone{border:2px dashed var(--line-2);border-radius:var(--radius);padding:32px 24px;text-align:center;cursor:pointer;transition:all .2s var(--ease);position:relative;background:var(--cream)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--green);background:var(--green-50)}
+.upload-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-zone-icon{width:48px;height:48px;border-radius:12px;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.upload-zone-icon svg{width:24px;height:24px}
+.upload-zone p{font-weight:700;font-size:.88rem;color:var(--text-2);margin-bottom:2px}
+.upload-zone small{color:var(--muted);font-size:.78rem}
+.file-preview{margin-top:14px;display:none}
+.file-preview.show{display:block}
+.file-preview img{max-height:140px;border-radius:var(--radius-sm);border:2px solid var(--line)}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;padding-top:10px}
+
+/* ===== CONFIRM ===== */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(11,30,48,.45);backdrop-filter:blur(6px);z-index:150;align-items:center;justify-content:center;padding:24px}
+.confirm-overlay.open{display:flex}
+.confirm-box{background:var(--white);border-radius:20px;padding:36px 32px 32px;max-width:380px;text-align:center;box-shadow:var(--shadow-lg);animation:modalSlide .3s var(--ease-spring) both}
+.confirm-icon{width:56px;height:56px;border-radius:50%;background:var(--red-light);color:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.confirm-icon svg{width:26px;height:26px}
+.confirm-box h4{font-family:"Fraunces",serif;font-size:1.1rem;font-weight:600;margin-bottom:8px;color:var(--dark)}
+.confirm-box p{color:var(--text-2);font-size:.88rem;margin-bottom:28px;line-height:1.5}
+.confirm-actions{display:flex;gap:10px;justify-content:center}
+.confirm-actions .btn{min-width:120px}
+
+/* ===== TOAST ===== */
+.toast-container{position:fixed;top:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px}
+.toast{display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:.86rem;box-shadow:var(--shadow-md);animation:toastSlide .35s var(--ease-spring) both;max-width:380px}
+.toast svg{flex-shrink:0;width:18px;height:18px}
+.toast-success{background:var(--green);color:var(--white)}
+.toast-error{background:var(--red);color:var(--white)}
+@keyframes toastSlide{from{opacity:0;transform:translateX(24px) scale(.95)}to{opacity:1;transform:none}}
+.spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,.3);border-top-color:var(--white);border-radius:50%;animation:spin .55s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fade-up{opacity:0;transform:translateY(12px);animation:fadeUp .45s var(--ease) forwards}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+.delay-1{animation-delay:.07s}.delay-2{animation-delay:.14s}
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <img src="../assets/logos/d'joana.png" alt="Instituto Social D'Joana" class="login-logo" />
+      <h1 class="serif">Painel Administrativo</h1>
+      <p class="login-sub">Gerencie o conteúdo do site do Instituto</p>
+      <div class="login-error" id="loginError">E-mail ou senha incorretos.</div>
+      <form id="loginForm" autocomplete="on">
+        <div class="login-field">
+          <label for="loginEmail">E-mail</label>
+          <input type="email" id="loginEmail" placeholder="seu@email.com" required autocomplete="email" />
+        </div>
+        <div class="login-field">
+          <label for="loginPassword">Senha</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn" style="margin-top:8px;padding:14px">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN APP -->
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="admin-app" id="adminApp">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <img src="../assets/logos/d'joana.png" alt="Instituto Social D'Joana" class="sidebar-logo" />
+        <span class="sidebar-badge">Painel Admin</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Menu</div>
+        <button class="nav-item active" data-section="dashboard" onclick="switchSection('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Início
+        </button>
+        <div class="sidebar-nav-label" style="margin-top:8px">Conteúdo</div>
+        <button class="nav-item" data-section="partners" onclick="switchSection('partners')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Parcerias <span class="nav-count" id="countPartners">—</span>
+        </button>
+        <button class="nav-item" data-section="news" onclick="switchSection('news')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Notícias <span class="nav-count" id="countNews">—</span>
+        </button>
+        <button class="nav-item" data-section="gallery" onclick="switchSection('gallery')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          Galeria <span class="nav-count" id="countGallery">—</span>
+        </button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="userEmail">admin</div>
+            <div class="sidebar-user-role">Administrador</div>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="handleLogout()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair da conta
+        </button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <!-- DASHBOARD -->
+      <section id="section-dashboard">
+        <div class="dash-welcome fade-up">
+          <h1 class="serif">Bem-vindo ao painel</h1>
+          <p>Aqui você gerencia parcerias, notícias e galeria do site do Instituto Social D'Joana.</p>
+        </div>
+        <div class="dash-grid fade-up delay-1">
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="stat-number" id="statPartners">—</div>
+            <div class="stat-label">Parcerias</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="stat-number" id="statNews">—</div>
+            <div class="stat-label">Notícias publicadas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>
+            <div class="stat-number" id="statGallery">—</div>
+            <div class="stat-label">Imagens na galeria</div>
+          </div>
+        </div>
+        <div class="dash-quick fade-up delay-2">
+          <h3>Ações rápidas</h3>
+          <div class="dash-quick-grid">
+            <button class="quick-btn" onclick="switchSection('partners');setTimeout(()=>openModal('partner'),200)">
+              <div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+              <div class="quick-label"><strong>Nova parceria</strong><span>Adicionar parceiro ao site</span></div>
+            </button>
+            <button class="quick-btn" onclick="switchSection('news');setTimeout(()=>openModal('news'),200)">
+              <div class="quick-icon" style="background:var(--blue-50);color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+              <div class="quick-label"><strong>Nova notícia</strong><span>Publicar atualização</span></div>
+            </button>
+            <button class="quick-btn" onclick="switchSection('gallery');setTimeout(()=>openModal('gallery'),200)">
+              <div class="quick-icon" style="background:var(--amber-light);color:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+              <div class="quick-label"><strong>Adicionar imagem</strong><span>Nova foto na galeria</span></div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PARTNERS -->
+      <section id="section-partners" style="display:none">
+        <div class="section-header fade-up">
+          <div><h2 class="serif">Parcerias</h2><p>Gerencie os parceiros exibidos no site</p></div>
+          <button class="btn btn-primary" onclick="openModal('partner')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar parceria
+          </button>
+        </div>
+        <div class="cards-grid fade-up delay-1" id="partnersGrid"></div>
+      </section>
+
+      <!-- NEWS -->
+      <section id="section-news" style="display:none">
+        <div class="section-header fade-up">
+          <div><h2 class="serif">Notícias</h2><p>Publicações e atualizações do Instituto</p></div>
+          <button class="btn btn-primary" onclick="openModal('news')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nova notícia
+          </button>
+        </div>
+        <div class="cards-grid fade-up delay-1" id="newsGrid"></div>
+      </section>
+
+      <!-- GALLERY -->
+      <section id="section-gallery" style="display:none">
+        <div class="section-header fade-up">
+          <div><h2 class="serif">Galeria</h2><p>Imagens e momentos do Instituto</p></div>
+          <button class="btn btn-primary" onclick="openModal('gallery')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar imagem
+          </button>
+        </div>
+        <div class="gallery-admin-grid fade-up delay-1" id="galleryGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-head">
+        <h3 class="serif" id="modalTitle">Adicionar</h3>
+        <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- CONFIRM -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div>
+      <h4>Confirmar exclusão</h4>
+      <p id="confirmText">Tem certeza que deseja excluir este item?</p>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" onclick="closeConfirm()">Cancelar</button>
+        <button class="btn btn-danger" id="confirmBtn" onclick="executeDelete()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+          Excluir
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script>
+const sb=getSupabase();let currentSection="dashboard",editingId=null,editingType=null,deleteTarget=null,counts={partners:0,news:0,gallery:0};
+
+async function checkSession(){const{data:{session}}=await sb.auth.getSession();if(session)showApp(session.user)}
+document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("loginEmail").value,password=document.getElementById("loginPassword").value,btn=document.getElementById("loginBtn"),err=document.getElementById("loginError");btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';err.classList.remove("show");const{data,error}=await sb.auth.signInWithPassword({email,password});if(error){err.textContent="E-mail ou senha incorretos. Tente novamente.";err.classList.add("show");btn.disabled=false;btn.textContent="Entrar";return}showApp(data.user)});
+function showApp(user){document.getElementById("loginScreen").style.display="none";document.getElementById("adminApp").classList.add("active");document.getElementById("userEmail").textContent=user.email;loadAll()}
+async function handleLogout(){await sb.auth.signOut();location.reload()}
+
+function switchSection(s){currentSection=s;document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.section===s));document.querySelectorAll("[id^='section-']").forEach(el=>el.style.display=el.id===`section-${s}`?"block":"none");closeMobile()}
+document.getElementById("mobileToggle").addEventListener("click",()=>{document.getElementById("sidebar").classList.add("open");document.getElementById("sidebarOverlay").classList.add("open")});
+document.getElementById("sidebarOverlay").addEventListener("click",closeMobile);
+function closeMobile(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("open")}
+
+async function loadAll(){await Promise.all([loadPartners(),loadNews(),loadGallery()]);updateDashboard()}
+function updateDashboard(){document.getElementById("statPartners").textContent=counts.partners;document.getElementById("statNews").textContent=counts.news;document.getElementById("statGallery").textContent=counts.gallery;document.getElementById("countPartners").textContent=counts.partners;document.getElementById("countNews").textContent=counts.news;document.getElementById("countGallery").textContent=counts.gallery}
+
+async function loadPartners(){const grid=document.getElementById("partnersGrid");const{data,error}=await sb.from("partners").select("*").order("display_order");if(error){toast("Erro ao carregar parcerias","error");return}counts.partners=data.length;if(!data.length){grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>Nenhuma parceria cadastrada</h4><p>Adicione o primeiro parceiro para exibir no site.</p><button class="btn btn-primary" onclick="openModal('partner')">Adicionar parceria</button></div>`;return}grid.innerHTML=data.map(p=>`<div class="content-card"><div class="partner-card"><div class="partner-logo-wrap">${p.logo_url?`<img src="${getPublicUrl(p.logo_url)}" alt="${esc(p.name)}"/>`:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'}</div><div class="partner-info"><h4>${esc(p.name)}</h4><p>${esc(p.description||"Sem descrição")}</p><span class="partner-order">Ordem: ${p.display_order}</span></div><div class="partner-actions"><button class="btn btn-secondary btn-sm" onclick='editPartner(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Editar</button><button class="btn btn-danger btn-sm" onclick="confirmDelete('partners','${p.id}','${esc(p.name)}')">Excluir</button></div></div></div>`).join("")}
+
+async function loadNews(){const grid=document.getElementById("newsGrid");const{data,error}=await sb.from("news").select("*").order("created_at",{ascending:false});if(error){toast("Erro ao carregar notícias","error");return}counts.news=data.length;if(!data.length){grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg></div><h4>Nenhuma notícia publicada</h4><p>Publique a primeira notícia para aparecer no site.</p><button class="btn btn-primary" onclick="openModal('news')">Publicar notícia</button></div>`;return}const fmtDate=d=>new Date(d).toLocaleDateString("pt-BR",{day:"2-digit",month:"short",year:"numeric"});grid.innerHTML=data.map(n=>`<div class="content-card">${n.image_url?`<div class="card-media"><img src="${getPublicUrl(n.image_url)}" alt="${esc(n.title)}"/><span class="card-tag">${esc(n.tag||"Notícia")}</span></div>`:""}<div class="card-body"><h4>${esc(n.title)}</h4>${n.description?`<div class="card-desc">${esc(n.description)}</div>`:""}<div class="card-meta">${fmtDate(n.created_at)}</div><div class="card-actions"><button class="btn btn-secondary btn-sm" onclick='editNews(${JSON.stringify(n).replace(/'/g,"&#39;")})'>Editar</button><button class="btn btn-danger btn-sm" onclick="confirmDelete('news','${n.id}','${esc(n.title)}')">Excluir</button></div></div></div>`).join("")}
+
+async function loadGallery(){const grid=document.getElementById("galleryGrid");const{data,error}=await sb.from("gallery").select("*").order("display_order");if(error){toast("Erro ao carregar galeria","error");return}counts.gallery=data.length;if(!data.length){grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div><h4>Nenhuma imagem na galeria</h4><p>Adicione a primeira foto para exibir no site.</p><button class="btn btn-primary" onclick="openModal('gallery')">Adicionar imagem</button></div>`;return}grid.innerHTML=data.map(img=>`<div class="gallery-card"><img src="${getPublicUrl(img.image_url)}" alt="${esc(img.caption||"")}"/><div class="gallery-caption">${esc(img.caption||"Sem legenda")}</div><div class="gallery-overlay"><button class="btn btn-sm" style="background:rgba(255,255,255,.9);color:var(--text)" onclick='editGalleryItem(${JSON.stringify(img).replace(/'/g,"&#39;")})'>Editar</button><button class="btn btn-sm" style="background:rgba(220,74,74,.9);color:#fff" onclick="confirmDelete('gallery','${img.id}','esta imagem')">Excluir</button></div></div>`).join("")}
+
+function openModal(type,data=null){editingType=type;editingId=data?.id||null;const title=document.getElementById("modalTitle"),body=document.getElementById("modalBody");
+const uploadBlock=(label,isReq,url)=>`<div class="form-group"><label>${label}${isReq&&!data?" *":""}</label><div class="upload-zone" id="uploadArea"><input type="file" id="f_file" accept="image/*" onchange="previewFile(this)" ${isReq&&!data?"required":""}/><div class="upload-zone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><p>Arraste ou clique para enviar</p><small>PNG, JPG ou SVG — máx. 5 MB</small></div><div class="file-preview ${url?"show":""}" id="filePreview">${url?`<img src="${getPublicUrl(url)}"/>`:""}</div></div>`;
+
+if(type==="partner"){title.textContent=data?"Editar parceria":"Nova parceria";body.innerHTML=`<div class="form-group"><label>Nome do parceiro *</label><input type="text" class="form-input" id="f_name" value="${esc(data?.name||"")}" placeholder="Ex: Global Fund for Children"/></div><div class="form-group"><label>Descrição</label><textarea class="form-input" id="f_description" placeholder="Breve descrição do parceiro...">${esc(data?.description||"")}</textarea></div><div class="form-group"><label>Link do site</label><input type="url" class="form-input" id="f_link" value="${esc(data?.link||"")}" placeholder="https://..."/><div class="form-hint">Opcional — link para o site do parceiro</div></div><div class="form-group"><label>Ordem de exibição</label><input type="text" class="form-input" id="f_order" value="${data?.display_order||0}" placeholder="0" style="max-width:120px"/><div class="form-hint">Número menor aparece primeiro</div></div>${uploadBlock("Logo do parceiro",false,data?.logo_url)}<div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" id="saveBtn" onclick="savePartner()">${data?"Salvar alterações":"Adicionar parceria"}</button></div>`}
+
+if(type==="news"){title.textContent=data?"Editar notícia":"Nova notícia";body.innerHTML=`<div class="form-group"><label>Título *</label><input type="text" class="form-input" id="f_title" value="${esc(data?.title||"")}" placeholder="Título da notícia"/></div><div class="form-group"><label>Descrição</label><textarea class="form-input" id="f_description" placeholder="Conte sobre essa notícia...">${esc(data?.description||"")}</textarea></div><div class="form-group"><label>Categoria</label><input type="text" class="form-input" id="f_tag" value="${esc(data?.tag||"")}" placeholder="Ex: Educação, Esporte, Parceria"/><div class="form-hint">Tag que aparece no card da notícia</div></div><div class="form-group"><label>Link externo</label><input type="url" class="form-input" id="f_link" value="${esc(data?.link||"")}" placeholder="https://instagram.com/p/..."/><div class="form-hint">Link para Instagram ou fonte da notícia</div></div>${uploadBlock("Imagem da notícia",false,data?.image_url)}<div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" id="saveBtn" onclick="saveNews()">${data?"Salvar alterações":"Publicar notícia"}</button></div>`}
+
+if(type==="gallery"){title.textContent=data?"Editar imagem":"Nova imagem";body.innerHTML=`${uploadBlock("Imagem",true,data?.image_url)}<div class="form-group"><label>Legenda</label><input type="text" class="form-input" id="f_caption" value="${esc(data?.caption||"")}" placeholder="Ex: Crianças em atividade no Instituto"/><div class="form-hint">Texto que aparece sobre a imagem no site</div></div><div class="form-group"><label>Ordem de exibição</label><input type="text" class="form-input" id="f_order" value="${data?.display_order||0}" placeholder="0" style="max-width:120px"/><div class="form-hint">Número menor aparece primeiro</div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" id="saveBtn" onclick="saveGalleryItem()">${data?"Salvar alterações":"Adicionar à galeria"}</button></div>`}
+
+document.getElementById("modalOverlay").classList.add("open");initUploadZone()}
+
+function closeModal(){document.getElementById("modalOverlay").classList.remove("open");editingId=null;editingType=null}
+function initUploadZone(){const a=document.getElementById("uploadArea");if(!a)return;a.addEventListener("dragover",e=>{e.preventDefault();a.classList.add("dragover")});a.addEventListener("dragleave",()=>a.classList.remove("dragover"));a.addEventListener("drop",e=>{e.preventDefault();a.classList.remove("dragover");const i=document.getElementById("f_file");i.files=e.dataTransfer.files;previewFile(i)})}
+function previewFile(input){const p=document.getElementById("filePreview");if(input.files&&input.files[0]){const r=new FileReader();r.onload=e=>{p.innerHTML=`<img src="${e.target.result}"/>`;p.classList.add("show")};r.readAsDataURL(input.files[0])}}
+
+async function savePartner(){const btn=document.getElementById("saveBtn"),name=val("f_name");if(!name){toast("Informe o nome do parceiro","error");return}btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Salvando...';try{let logo_url=null;const file=document.getElementById("f_file")?.files[0];if(file)logo_url=await uploadFile(file,"partners");const payload={name,description:val("f_description"),link:val("f_link"),display_order:parseInt(val("f_order"))||0};if(logo_url)payload.logo_url=logo_url;if(editingId){const{error}=await sb.from("partners").update(payload).eq("id",editingId);if(error)throw error;toast("Parceria atualizada!")}else{if(!logo_url)payload.logo_url=null;const{error}=await sb.from("partners").insert(payload);if(error)throw error;toast("Parceria adicionada!")}closeModal();await loadPartners();updateDashboard()}catch(err){toast("Erro ao salvar: "+err.message,"error");btn.disabled=false;btn.textContent="Tentar novamente"}}
+
+async function saveNews(){const btn=document.getElementById("saveBtn"),t=val("f_title");if(!t){toast("Informe o título da notícia","error");return}btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Salvando...';try{let image_url=null;const file=document.getElementById("f_file")?.files[0];if(file)image_url=await uploadFile(file,"news");const payload={title:t,description:val("f_description"),tag:val("f_tag")||"Notícia",link:val("f_link")};if(image_url)payload.image_url=image_url;if(editingId){const{error}=await sb.from("news").update(payload).eq("id",editingId);if(error)throw error;toast("Notícia atualizada!")}else{if(!image_url)payload.image_url=null;const{error}=await sb.from("news").insert(payload);if(error)throw error;toast("Notícia publicada!")}closeModal();await loadNews();updateDashboard()}catch(err){toast("Erro ao salvar: "+err.message,"error");btn.disabled=false;btn.textContent="Tentar novamente"}}
+
+async function saveGalleryItem(){const btn=document.getElementById("saveBtn");btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Salvando...';try{let image_url=null;const file=document.getElementById("f_file")?.files[0];if(file)image_url=await uploadFile(file,"gallery");if(!editingId&&!image_url){toast("Selecione uma imagem","error");btn.disabled=false;btn.textContent="Adicionar à galeria";return}const payload={caption:val("f_caption"),display_order:parseInt(val("f_order"))||0};if(image_url)payload.image_url=image_url;if(editingId){const{error}=await sb.from("gallery").update(payload).eq("id",editingId);if(error)throw error;toast("Imagem atualizada!")}else{const{error}=await sb.from("gallery").insert(payload);if(error)throw error;toast("Imagem adicionada à galeria!")}closeModal();await loadGallery();updateDashboard()}catch(err){toast("Erro ao salvar: "+err.message,"error");btn.disabled=false;btn.textContent="Tentar novamente"}}
+
+function editPartner(p){openModal("partner",p)}
+function editNews(n){openModal("news",n)}
+function editGalleryItem(g){openModal("gallery",g)}
+function confirmDelete(table,id,label){deleteTarget={table,id};document.getElementById("confirmText").textContent=`Tem certeza que deseja excluir "${label}"? Essa ação não pode ser desfeita.`;document.getElementById("confirmOverlay").classList.add("open")}
+function closeConfirm(){document.getElementById("confirmOverlay").classList.remove("open");deleteTarget=null}
+async function executeDelete(){if(!deleteTarget)return;const btn=document.getElementById("confirmBtn");btn.disabled=true;btn.innerHTML='<span class="spinner" style="border-top-color:var(--red)"></span>';const{error}=await sb.from(deleteTarget.table).delete().eq("id",deleteTarget.id);if(error){toast("Erro ao excluir: "+error.message,"error")}else{toast("Excluído com sucesso!");if(deleteTarget.table==="partners")await loadPartners();if(deleteTarget.table==="news")await loadNews();if(deleteTarget.table==="gallery")await loadGallery();updateDashboard()}btn.disabled=false;btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg> Excluir';closeConfirm()}
+
+function val(id){return document.getElementById(id)?.value?.trim()||""}
+function esc(str){const d=document.createElement("div");d.textContent=str||"";return d.innerHTML}
+function toast(msg,type="success"){const c=document.getElementById("toastContainer"),icon=type==="success"?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',el=document.createElement("div");el.className=`toast toast-${type}`;el.innerHTML=`${icon}<span>${msg}</span>`;c.appendChild(el);setTimeout(()=>{el.style.opacity="0";el.style.transform="translateX(24px)";el.style.transition="all .3s var(--ease)";setTimeout(()=>el.remove(),300)},3500)}
+
+checkSession();
+  </script>
+</body>
+</html>

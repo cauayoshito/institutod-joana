@@ -124,12 +124,14 @@
           <div class="hero-copy">
             <p class="eyebrow">Educação · Cultura · Esporte · Acolhimento</p>
             <h1>
-              Quando a escola fecha,<br />
-              <em>o futuro começa.</em>
+              Cuidar no presente<br />
+              para transformar<br />
+              <em>o futuro.</em>
             </h1>
             <p class="hero-text">
-              Um espaço seguro para crianças e adolescentes crescerem com apoio,
-              afeto e oportunidades reais em Camaçari, Bahia.
+              O Instituto Social D&rsquo;Joana acolhe crianças e adolescentes no
+              contraturno escolar com educação, cultura, esporte e
+              oportunidades reais de desenvolvimento.
             </p>
 
             <div class="hero-actions">
@@ -342,7 +344,7 @@
           </div>
         </div>
 
-        <div class="marquee-wrapper reveal">
+        <div class="marquee-wrapper reveal" id="partners-dynamic">
           <div class="marquee-track">
             <div class="marquee-set" aria-hidden="false">
               <figure class="marquee-logo marquee-logo--global">
@@ -450,7 +452,7 @@
             </p>
           </div>
 
-          <div class="news-grid reveal">
+          <div class="news-grid reveal" id="news-dynamic">
             <!-- CARD 1 -->
             <article class="news-card news-card--featured">
               <a
@@ -636,7 +638,7 @@
             </p>
           </div>
 
-          <div class="gallery-grid">
+          <div class="gallery-grid" id="gallery-dynamic">
             <figure class="gallery-item gallery-item-feature reveal">
               <img
                 src="assets/images/hero-kids.jpg"
@@ -902,6 +904,9 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/site-data.js"></script>
   </body>
 </html>
