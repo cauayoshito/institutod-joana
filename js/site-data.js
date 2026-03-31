@@ -126,6 +126,24 @@
 
   // ===== GALERIA =====
 
+  function getGalleryImageClass(caption = "") {
+    const normalizedCaption = caption
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+
+    if (normalizedCaption.includes("sorrisos que traduzem pertencimento")) {
+      return "img-rosto-top";
+    }
+
+    if (normalizedCaption.includes("convivencia que fortalece amizades")) {
+      return "img-rosto-center";
+    }
+
+    return "";
+  }
+
   async function loadGallery() {
     const container = document.getElementById("gallery-dynamic");
     if (!container) return;
@@ -155,16 +173,22 @@
 
       container.innerHTML = data
         .map(
-          (img, i) => `
+          (img, i) => {
+            const caption = img.caption || "";
+            const imageClass = getGalleryImageClass(caption);
+
+            return `
         <figure class="gallery-item ${layoutClasses[i % layoutClasses.length] || ""} reveal visible">
           <img
             src="${getPublicUrl(img.image_url)}"
-            alt="${img.caption || "Momento no Instituto Social D'Joana"}"
+            alt="${caption || "Momento no Instituto Social D'Joana"}"
+            ${imageClass ? `class="${imageClass}"` : ""}
             loading="lazy"
             decoding="async"
           />
-          <figcaption>${img.caption || ""}</figcaption>
-        </figure>`
+          <figcaption>${caption}</figcaption>
+        </figure>`;
+          }
         )
         .join("");
     } catch (err) {
