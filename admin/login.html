@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ACEBA Admin: Login</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-login-page">
+    <main class="login-shell">
+      <section class="login-card">
+        <p class="admin-kicker">ACEBA Admin</p>
+        <h1>Acesso institucional</h1>
+        <p class="login-lead">
+          Entre com o e-mail autorizado no Supabase para gerenciar o conteúdo do site.
+        </p>
+
+        <form id="loginForm" class="admin-form">
+          <label>
+            E-mail
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label>
+            Senha
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit" class="admin-button">Entrar</button>
+          <p id="loginStatus" class="admin-status" role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

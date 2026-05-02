@@ -1,108 +1,157 @@
-# Instituto Social D'Joana — Site + Painel Admin
+# ACEBA · Site institucional com painel administrativo
 
-## Estrutura do Projeto
+Site institucional da Associação Comunitária Estiva Buris de Abrantes, com frontend público em HTML/CSS/JS puro e painel administrativo integrado ao Supabase.
 
-```
-djoana/
-├── index.html              ← Site público (frontend)
+## Stack
+
+- HTML, CSS e JavaScript puro
+- Não usa Next, Vite, bundler ou `.env.local`
+- Supabase via CDN global no HTML
+- Supabase Auth para login administrativo
+- Supabase Database com RLS para dados públicos e gestão interna
+- Supabase Storage opcional para hospedar logos, fotos e documentos
+- Sem build obrigatório. Pode ser publicado em Netlify, Vercel, GitHub Pages, S3, Hostinger ou Apache
+
+## Estrutura
+
+```text
+aceba-site-v2/
+├── index.html
 ├── css/
-│   └── style.css           ← Estilos do site
+│   └── style.css
 ├── js/
-│   ├── main.js             ← Interações do site (scroll, menu, etc)
-│   ├── supabase-config.js  ← Configuração do Supabase (EDITAR AQUI)
-│   └── site-data.js        ← Carrega dados dinâmicos no site
+│   ├── main.js
+│   └── supabase-client.js
 ├── admin/
-│   └── index.html          ← Painel administrativo completo
-├── assets/
-│   ├── images/             ← Imagens do site
-│   └── logos/              ← Logos dos parceiros
-├── setup.sql               ← SQL para configurar o banco
-└── README.md               ← Este arquivo
+│   ├── login.html
+│   ├── dashboard.html
+│   ├── admin.css
+│   └── admin.js
+├── supabase/
+│   └── schema.sql
+└── assets/
+    ├── images/
+    └── logos/
 ```
 
----
+## Como funciona
 
-## Configuração Passo a Passo
+O site público continua com conteúdo estático como fallback. Quando `js/supabase-client.js` estiver configurado, o `js/main.js` busca dados ativos no Supabase e substitui partes do site:
 
-### 1. Criar projeto no Supabase
+- Parceiros: tabela `partners`
+- Galeria: tabela `gallery_images`
+- Documentos de transparência: tabela `transparency_documents`
+- Configurações: tabela `site_settings`
 
-1. Acesse [supabase.com](https://supabase.com) e crie uma conta gratuita
-2. Clique em **"New Project"**
-3. Escolha um nome (ex: `djoana-site`)
-4. Defina uma senha para o banco de dados
-5. Selecione a região South America (São Paulo)
-6. Aguarde a criação do projeto
+Se o Supabase estiver sem credenciais, fora do ar ou sem registros ativos, o site não quebra.
 
-### 2. Configurar o banco de dados
+## Configurar Supabase
 
-1. No painel do Supabase, vá em **SQL Editor** (menu lateral)
-2. Clique em **"New query"**
-3. Copie **todo** o conteúdo do arquivo `setup.sql` e cole no editor
-4. Clique em **"Run"** (botão verde)
-5. Deve aparecer "Success" — tabelas, políticas e storage criados
+1. Crie um projeto em https://supabase.com.
+2. Abra o SQL Editor.
+3. Rode o arquivo `supabase/schema.sql`.
+4. Em Authentication, crie um usuário admin com e-mail e senha.
+5. Copie o ID do usuário criado em `auth.users`.
+6. Insira esse usuário na tabela `admin_users`:
 
-### 3. Conectar o site ao Supabase
-
-1. No Supabase, vá em **Settings > API**
-2. Copie a **Project URL** (ex: `https://abc123.supabase.co`)
-3. Copie a **anon public key**
-4. Abra o arquivo `js/supabase-config.js`
-5. Substitua os valores:
-
-```javascript
-const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
-const SUPABASE_ANON_KEY = "SUA-ANON-KEY-AQUI";
+```sql
+insert into public.admin_users (id, email)
+values ('COLE_AQUI_O_ID_DO_USUARIO_AUTH', 'admin@aceba.org.br');
 ```
 
-### 4. Criar usuário admin
+7. Em Project Settings > API, copie:
+- Project URL
+- anon public key
 
-1. No Supabase, vá em **Authentication > Users**
-2. Clique em **"Add user" > "Create new user"**
-3. Preencha email e senha (dados de acesso ao painel)
-4. Marque **"Auto Confirm User"**
-5. Clique em **"Create user"**
+8. Cole os valores em `js/supabase-client.js`:
 
-### 5. Testar localmente
+```js
+const SUPABASE_URL = "https://seu-projeto.supabase.co";
+const SUPABASE_ANON_KEY = "sua-anon-key";
+```
 
-**VS Code com Live Server:**
-- Instale a extensão "Live Server"
-- Clique direito no `index.html` > "Open with Live Server"
-- Admin: `http://localhost:5500/admin/`
+Não coloque `service_role_key` no frontend.
 
-**Ou Python:**
+## Acessar o painel
+
+Depois de configurar o Supabase:
+
+```text
+/admin/login.html
+```
+
+O painel permite gerenciar:
+
+- Parceiros
+- Projetos
+- Galeria
+- Transparência
+- Configurações do site
+
+Campos de configurações disponíveis:
+
+- `phone`
+- `whatsapp`
+- `email`
+- `instagram`
+- `facebook`
+- `pix_key`
+- `address`
+
+Use o WhatsApp no formato numérico com DDI, por exemplo `5571997364451`.
+
+## Segurança
+
+O schema ativa RLS em todas as tabelas.
+
+- Tabelas públicas leem apenas registros `is_active = true`
+- Usuários autenticados só escrevem se estiverem cadastrados em `admin_users`
+- `site_settings` tem leitura pública porque contém dados institucionais exibidos no site
+- A chave `anon` pode ficar no frontend; a chave `service_role` nunca deve ser publicada
+
+## Storage
+
+O `schema.sql` cria três buckets públicos:
+
+- `logos`
+- `gallery`
+- `documents`
+
+O painel usa campos de URL para imagens e documentos. Suba os arquivos no Storage do Supabase, copie a URL pública e cole no campo correspondente do admin.
+
+## Como testar localmente
+
 ```bash
-cd djoana
+cd aceba-site-v2
 python3 -m http.server 8000
-# Site: http://localhost:8000
-# Admin: http://localhost:8000/admin/
 ```
 
-### 6. Deploy (Publicar)
+Acesse:
 
-**Recomendado: Netlify (grátis)**
-1. Acesse [netlify.com](https://netlify.com)
-2. Arraste a pasta `djoana/` para o painel
-3. Pronto — site no ar em segundos
-4. Configure domínio personalizado se desejar
+```text
+http://localhost:8000
+http://localhost:8000/admin/login.html
+```
 
----
+Abrir `index.html` direto por `file://` pode funcionar para o site estático, mas o admin e os scripts do Supabase funcionam melhor via servidor local.
 
-## Como usar o Painel Admin
+## Checklist antes de publicar
 
-### Parcerias
-- **Adicionar**: nome, descrição, logo, link e ordem de exibição
-- **Editar**: alterar qualquer campo existente
-- **Excluir**: com confirmação antes de deletar
-- O carrossel do site atualiza automaticamente
+- [ ] Rodar `supabase/schema.sql` no projeto final
+- [ ] Criar o usuário admin no Supabase Auth
+- [ ] Inserir o usuário na tabela `admin_users`
+- [ ] Colar `SUPABASE_URL` e `SUPABASE_ANON_KEY`
+- [ ] Cadastrar parceiros reais
+- [ ] Cadastrar fotos oficiais da galeria
+- [ ] Cadastrar documentos de transparência quando estiverem prontos
+- [ ] Revisar telefone, WhatsApp, e-mail, Instagram, chave Pix e endereço em Configurações
+- [ ] Atualizar domínio final em canonical, Open Graph e imagens sociais
+- [ ] Confirmar depoimentos reais e autorizações de uso
+- [ ] Testar login, logout e bloqueio de acesso sem sessão
+- [ ] Testar site público com Supabase configurado e sem Supabase configurado
 
-### Notícias
-- **Publicar**: título, descrição, tag, imagem e link
-- A notícia mais recente aparece como destaque
-- Máximo de 3 notícias exibidas no site
+## Observações
 
-### Galeria
-- **Upload**: arraste ou clique para enviar imagens
-- **Legenda**: texto que aparece sobre a imagem
-- **Ordem**: controla posição no grid
+O formulário de contato envia a mensagem pelo WhatsApp oficial da ACEBA. Não há backend próprio para mensagens nesta fase.
 
-### Todas as alterações refletem imediatamente no site público.
+O conteúdo público atual não foi removido. Ele permanece como base institucional e fallback para a integração dinâmica.

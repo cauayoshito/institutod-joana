@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ACEBA Admin: Painel</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-page">
+    <div class="admin-shell">
+      <!-- ============== SIDEBAR ============== -->
+      <aside class="admin-sidebar" aria-label="Navegação administrativa">
+        <a class="admin-brand" href="../index.html" title="Voltar ao site">
+          <img src="../assets/logos/aceba.png" alt="Logo ACEBA" />
+          <span class="admin-brand-words">
+            <span class="admin-brand-name">ACEBA</span>
+            <span class="admin-brand-sub">Painel administrativo</span>
+          </span>
+        </a>
+
+        <nav class="admin-nav" aria-label="Menu administrativo">
+          <button class="admin-nav-item is-active" type="button" data-section="dashboard">
+            <span class="admin-nav-label">Início</span>
+          </button>
+          <button class="admin-nav-item" type="button" data-section="partners">
+            <span class="admin-nav-label">Parceiros</span>
+            <span class="admin-nav-count" data-count="partners">0</span>
+          </button>
+          <button class="admin-nav-item" type="button" data-section="projects">
+            <span class="admin-nav-label">Projetos</span>
+            <span class="admin-nav-count" data-count="projects">0</span>
+          </button>
+          <button class="admin-nav-item" type="button" data-section="gallery_images">
+            <span class="admin-nav-label">Galeria</span>
+            <span class="admin-nav-count" data-count="gallery_images">0</span>
+          </button>
+          <button class="admin-nav-item" type="button" data-section="transparency_documents">
+            <span class="admin-nav-label">Transparência</span>
+            <span class="admin-nav-count" data-count="transparency_documents">0</span>
+          </button>
+          <button class="admin-nav-item" type="button" data-section="site_settings">
+            <span class="admin-nav-label">Configurações</span>
+          </button>
+        </nav>
+
+        <div class="admin-sidebar-foot">
+          <p id="sessionEmail" class="admin-session-email"></p>
+          <button id="logoutButton" class="admin-logout" type="button">Sair</button>
+        </div>
+      </aside>
+
+      <!-- ============== MAIN ============== -->
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <p class="admin-kicker">Painel institucional</p>
+            <h1 id="sectionTitle">Início</h1>
+            <p id="sectionSubtitle" class="admin-subtitle">Resumo geral do conteúdo do site</p>
+          </div>
+          <div class="admin-topbar-actions">
+            <button id="primaryActionButton" class="admin-button is-hidden" type="button">
+              + Novo registro
+            </button>
+          </div>
+        </header>
+
+        <div id="adminToast" class="admin-toast" role="status" aria-live="polite"></div>
+
+        <section id="adminContent" class="admin-content">
+          <!-- Conteúdo dinâmico injetado por admin.js -->
+        </section>
+      </main>
+    </div>
+
+    <!-- ============== MODAL ============== -->
+    <div id="adminModal" class="admin-modal" aria-hidden="true">
+      <div class="admin-modal-backdrop" data-modal-close></div>
+      <div class="admin-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+        <header class="admin-modal-head">
+          <h2 id="adminModalTitle">Novo registro</h2>
+          <button type="button" class="admin-modal-close" data-modal-close aria-label="Fechar">
+            &times;
+          </button>
+        </header>
+        <form id="adminModalForm" class="admin-modal-body" novalidate></form>
+        <footer class="admin-modal-foot">
+          <button type="button" class="admin-button secondary" data-modal-close>Cancelar</button>
+          <button type="button" class="admin-button" id="adminModalSubmit">Salvar</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
