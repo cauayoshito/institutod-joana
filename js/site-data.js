@@ -94,7 +94,7 @@
         .map(
           (n, i) => `
         <article class="news-card ${i === 0 ? "news-card--featured" : ""}">
-          <a href="${n.link || "#"}" ${n.link ? 'target="_blank" rel="noopener noreferrer"' : ""} class="news-card-link" aria-label="${n.title}">
+          <a href="noticias/artigo.html?id=${n.id}" class="news-card-link" aria-label="${n.title}">
             ${
               n.image_url
                 ? `<div class="news-card-media">
@@ -108,17 +108,17 @@
               <p>${n.description || ""}</p>
               <div class="news-footer">
                 <span class="news-date">${formatDate(n.created_at)}</span>
-                ${
-                  n.link
-                    ? `<span class="news-source">${externalIcon} @institutosocialdjoana</span>`
-                    : ""
-                }
+                <span class="news-read-more">Ler matéria →</span>
               </div>
             </div>
           </a>
         </article>`
         )
         .join("");
+
+      // "Ver todas" button
+      const verTodas = document.getElementById("news-ver-todas");
+      if (verTodas) verTodas.style.display = "";
     } catch (err) {
       console.error("Erro ao carregar notícias:", err);
     }

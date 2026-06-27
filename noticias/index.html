@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notícias · Instituto Social D'Joana</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="artigo.css" />
+  <link rel="stylesheet" href="listagem.css" />
+</head>
+<body class="listagem-page">
+
+  <!-- Topbar -->
+  <header class="artigo-topbar">
+    <div class="artigo-topbar-inner">
+      <a href="../index.html" class="artigo-back-logo">
+        <img src="../assets/logos/d'joana.png" alt="Instituto Social D'Joana" />
+      </a>
+      <a href="../index.html" class="artigo-back-link">← Voltar ao site</a>
+    </div>
+  </header>
+
+  <main class="listagem-main">
+    <div class="container">
+      <header class="listagem-header">
+        <p class="eyebrow">Parcerias &amp; Ações</p>
+        <h1>Notícias do Instituto</h1>
+        <p class="listagem-lead">Acompanhe os projetos, parcerias e ações do Instituto Social D'Joana.</p>
+      </header>
+
+      <div id="listagem-loading" class="artigo-loading">
+        <div class="artigo-spinner"></div>
+        <p>Carregando…</p>
+      </div>
+
+      <div id="listagem-grid" class="listagem-grid" style="display:none"></div>
+
+      <div id="listagem-empty" class="listagem-empty" style="display:none">
+        <p>Nenhuma notícia publicada ainda.</p>
+        <a href="../index.html" class="btn btn-outline">← Voltar ao site</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="listagem.js"></script>
+</body>
+</html>

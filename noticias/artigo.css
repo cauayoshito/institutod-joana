@@ -1,0 +1,206 @@
+/* ================================================================
+   Instituto Social D'Joana · artigo.css
+   Estilos da página de artigo de notícia.
+   ================================================================ */
+
+.artigo-page {
+  background: #f9f9f6;
+  min-height: 100vh;
+}
+
+/* ── Topbar ─────────────────────────────────────────────────── */
+.artigo-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #e5e7e4;
+  padding: 12px 20px;
+}
+
+.artigo-topbar-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.artigo-back-logo img {
+  height: 36px;
+  width: auto;
+}
+
+.artigo-back-link {
+  font-size: 0.875rem;
+  color: #4a6741;
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.artigo-back-link:hover { text-decoration: underline; }
+
+/* ── Main ────────────────────────────────────────────────────── */
+.artigo-main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* ── Loading / Error ─────────────────────────────────────────── */
+.artigo-loading,
+.artigo-error {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+}
+
+.artigo-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7e4;
+  border-top-color: #4a6741;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Cover ───────────────────────────────────────────────────── */
+.artigo-cover-wrap {
+  margin-bottom: 32px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.artigo-cover {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Body ────────────────────────────────────────────────────── */
+.artigo-breadcrumb {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #4a6741;
+  text-decoration: none;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.artigo-breadcrumb:hover { text-decoration: underline; }
+
+.news-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4a6741;
+  background: #e8f0e6;
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-bottom: 14px;
+}
+
+#artigo-title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  line-height: 1.22;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+.artigo-date {
+  display: block;
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 28px;
+}
+
+.artigo-text p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #333;
+  margin-bottom: 18px;
+}
+
+/* ── Documents ───────────────────────────────────────────────── */
+.artigo-docs {
+  margin-top: 36px;
+  padding: 24px;
+  background: #e8f0e6;
+  border-radius: 10px;
+}
+
+.artigo-docs-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+}
+
+.artigo-docs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.artigo-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Instagram source ────────────────────────────────────────── */
+.artigo-source {
+  margin-top: 28px;
+}
+
+/* ── Back link ───────────────────────────────────────────────── */
+.artigo-back-bottom {
+  display: inline-block;
+  margin-top: 40px;
+  color: #4a6741;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.artigo-back-bottom:hover { text-decoration: underline; }
+
+/* ── Skeleton (loading cards in index.html) ──────────────────── */
+.news-card--skeleton .news-card-media.skeleton-block {
+  background: #e0e0da;
+  height: 180px;
+  border-radius: 8px 8px 0 0;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.skeleton-inline {
+  display: inline-block;
+  background: #e0e0da;
+  border-radius: 4px;
+  width: 70px;
+  height: 14px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.skeleton-line {
+  display: block;
+  background: #e0e0da;
+  border-radius: 4px;
+  height: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.skeleton-line--short { width: 60%; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}

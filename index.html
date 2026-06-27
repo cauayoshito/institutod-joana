@@ -331,6 +331,7 @@
           <a href="#sobre">Quem somos</a>
           <a href="#projetos">Projetos</a>
           <a href="#impacto">Impacto</a>
+          <a href="#noticias">Notícias</a>
           <a href="#parcerias">Parcerias</a>
           <a href="#transparencia">Transparência</a>
           <a href="#contato">Contato</a>
@@ -362,6 +363,7 @@
         <a href="#projetos">Projetos</a>
         <a href="#impacto">Impacto</a>
         <a href="#depoimentos">Depoimentos</a>
+        <a href="#noticias">Notícias</a>
         <a href="#parcerias">Parcerias</a>
         <a href="#transparencia">Transparência</a>
         <a href="#contato">Contato</a>
@@ -1042,6 +1044,49 @@
         </div>
       </section>
 
+      <!-- =================== NOTÍCIAS =================== -->
+      <section class="news-section section" id="noticias">
+        <div class="container">
+          <header class="section-head reveal">
+            <span class="section-num">06</span>
+            <p class="eyebrow">Parcerias &amp; Ações</p>
+            <h2 class="display">Notícias do Instituto</h2>
+            <p class="section-lead">
+              Acompanhe os projetos, parcerias e ações que transformam vidas
+              em Vila de Abrantes e região.
+            </p>
+          </header>
+
+          <div id="news-dynamic" class="news-grid">
+            <!-- Notícias carregadas via Supabase -->
+            <article class="news-card news-card--featured news-card--skeleton">
+              <div class="news-card-media skeleton-block"></div>
+              <div class="news-card-body">
+                <span class="news-tag skeleton-inline"></span>
+                <h3 class="skeleton-line"></h3>
+                <p class="skeleton-line skeleton-line--short"></p>
+              </div>
+            </article>
+            <article class="news-card news-card--skeleton">
+              <div class="news-card-body">
+                <span class="news-tag skeleton-inline"></span>
+                <h3 class="skeleton-line"></h3>
+              </div>
+            </article>
+            <article class="news-card news-card--skeleton">
+              <div class="news-card-body">
+                <span class="news-tag skeleton-inline"></span>
+                <h3 class="skeleton-line"></h3>
+              </div>
+            </article>
+          </div>
+
+          <div class="news-actions" id="news-ver-todas" style="display:none">
+            <a href="noticias/" class="btn btn-outline">Ver todas as notícias</a>
+          </div>
+        </div>
+      </section>
+
       <section id="parcerias" class="partners-section">
         <div class="container partners-container">
           <div class="section-kicker">Rede de apoio institucional</div>
@@ -1705,6 +1750,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-client.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/site-data.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

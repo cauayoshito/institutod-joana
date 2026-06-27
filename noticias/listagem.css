@@ -1,0 +1,58 @@
+/* ================================================================
+   Instituto Social D'Joana · listagem.css
+   ================================================================ */
+
+.listagem-page { background: #f9f9f6; min-height: 100vh; }
+
+.listagem-main { padding: 48px 20px 80px; }
+
+.listagem-header {
+  max-width: 640px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.listagem-header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 8px 0 12px;
+}
+
+.listagem-lead {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.listagem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.listagem-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+/* news-read-more inside cards */
+.news-read-more {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4a6741;
+  transition: letter-spacing 0.15s;
+}
+
+.news-card-link:hover .news-read-more {
+  letter-spacing: 0.02em;
+}
+
+/* news-actions button */
+.news-actions {
+  text-align: center;
+  margin-top: 40px;
+}

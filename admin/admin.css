@@ -939,3 +939,51 @@ h1, h2, h3 {
 @media (max-width: 540px) {
   .admin-summary-card .value { font-size: 1.8rem; }
 }
+
+/* ================================================================
+   NEWS admin module styles
+   ================================================================ */
+
+.admin-upload-btn {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #f0f4ef;
+  border: 1.5px dashed #9ab494;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #3a5a35;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 6px;
+}
+
+.admin-upload-btn:hover { background: #e3ede0; }
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.admin-field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.news-doc-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.news-doc-row input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.82rem;
+}

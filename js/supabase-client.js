@@ -4,8 +4,8 @@
    - Expõe window.supabaseClient + window.isSupabaseConfigured
    ================================================================ */
 
-const SUPABASE_URL = "https://cgvdzxklsjxudhpmripa.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_NL6uC5IbumZ1BsuHrxHKyw_lCTbacZK";
+const SUPABASE_URL = "https://itprxlugmackvsjtfekv.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_11fxO2xEu0yKUbJ8sXL00A_hmsJ8Kgr";
 
 // Sentinelas: se a URL/key parecerem placeholder, não inicializa.
 const URL_LOOKS_VALID =

@@ -120,6 +120,7 @@
     "projects",
     "gallery_images",
     "transparency_documents",
+    "news",
     "site_settings",
   ];
 
@@ -131,6 +132,7 @@
       projects: 0,
       gallery_images: 0,
       transparency_documents: 0,
+      news: 0,
     },
     modal: {
       isOpen: false,
@@ -255,7 +257,7 @@
   /* --------------- COUNTERS --------------- */
   async function refreshCounts() {
     if (!isSupabaseConfigured) return;
-    var tables = ["partners", "projects", "gallery_images", "transparency_documents"];
+    var tables = ["partners", "projects", "gallery_images", "transparency_documents", "news"];
     await Promise.all(
       tables.map(async function (table) {
         var resp = await supabase
@@ -743,6 +745,176 @@
   function saveGalleryImage() { return saveRecord("gallery_images"); }
   function saveDocument()     { return saveRecord("transparency_documents"); }
 
+  /* ─── NEWS: custom module with image upload + multi-doc ─── */
+  var newsUploadingImg = false;
+  var newsUploadingDoc = false;
+  var newsForm = { id: null, title: "", description: "", content: "", image_url: "", tag: "", link: "", documents: [] };
+
+  function newsReset() {
+    newsForm = { id: null, title: "", description: "", content: "", image_url: "", tag: "", link: "", documents: [] };
+    newsUploadingImg = false;
+    newsUploadingDoc = false;
+  }
+
+  async function loadNews() {
+    var content = $("#adminContent");
+    var title = $("#sectionTitle");
+    var sub = $("#sectionSubtitle");
+    if (title) title.textContent = "Notícias";
+    if (sub) sub.textContent = "Postagens, parcerias e ações publicadas no site.";
+
+    if (!isSupabaseConfigured) { if (content) content.innerHTML = newsUnconfiguredHtml(); return; }
+
+    var resp = await supabase.from("news").select("*").order("created_at", { ascending: false });
+    if (resp.error) { toast("Erro ao carregar notícias: " + resp.error.message, "error"); return; }
+    var rows = resp.data || [];
+
+    if (content) content.innerHTML = newsListHtml(rows);
+    $$(".news-admin-new-btn").forEach(function(btn){ btn.onclick = function(){ newsOpenModal(null); }; });
+    $$(".news-admin-edit-btn").forEach(function(btn){ btn.onclick = function(){ var row = rows.find(function(r){ return r.id === btn.dataset.id; }); newsOpenModal(row); }; });
+    $$(".news-admin-delete-btn").forEach(function(btn){ btn.onclick = async function(){
+      if (!confirm("Excluir esta notícia?")) return;
+      await supabase.from("news").delete().eq("id", btn.dataset.id);
+      toast("Notícia excluída", "success");
+      await loadNews();
+      await refreshCounts();
+    }; });
+    $$(".news-admin-toggle-btn").forEach(function(btn){ btn.onclick = async function(){
+      var cur = btn.dataset.active === "true";
+      await supabase.from("news").update({ active: !cur }).eq("id", btn.dataset.id);
+      toast(!cur ? "Notícia ativada" : "Notícia desativada", "success");
+      await loadNews();
+    }; });
+  }
+
+  function newsUnconfiguredHtml() {
+    return '<div class="admin-empty"><div class="admin-empty-icon">!</div><h3>Supabase não configurado</h3></div>';
+  }
+
+  function newsListHtml(rows) {
+    var newBtn = '<div class="admin-module-head"><button class="btn admin-new-btn news-admin-new-btn">+ Nova notícia</button></div>';
+    if (!rows.length) return newBtn + '<div class="admin-empty"><div class="admin-empty-icon">📰</div><h3>Nenhuma notícia ainda</h3><p>Clique em "+ Nova notícia" para começar.</p></div>';
+    return newBtn + '<div class="record-list">' + rows.map(function(r){
+      return '<div class="record-card"><div class="record-card-body"><div class="record-title">' + esc(r.title) + '</div><div class="record-summary">' + esc(r.tag || "") + (r.active ? ' · ativo' : ' · inativo') + '</div></div><div class="record-actions"><button class="record-action news-admin-toggle-btn" data-id="' + r.id + '" data-active="' + r.active + '">' + (r.active ? "Desativar" : "Ativar") + '</button><button class="record-action news-admin-edit-btn" data-id="' + r.id + '">Editar</button><button class="record-action is-danger news-admin-delete-btn" data-id="' + r.id + '">Excluir</button></div></div>';
+    }).join("") + '</div>';
+  }
+
+  function newsOpenModal(row) {
+    newsReset();
+    if (row) { newsForm = { id: row.id, title: row.title || "", description: row.description || "", content: row.content || "", image_url: row.image_url || "", tag: row.tag || "", link: row.link || "", documents: Array.isArray(row.documents) ? row.documents : [] }; }
+    var modal = $("#adminModal");
+    if (!modal) return;
+    modal.style.display = "flex";
+    state.modal.isOpen = true;
+    newsRenderModal();
+  }
+
+  function newsRenderModal() {
+    var form = $("#adminModalForm");
+    var submit = $('#adminModal [data-modal-submit]');
+    var modalTitle = $('#adminModal .admin-modal-title');
+    if (modalTitle) modalTitle.textContent = newsForm.id ? "Editar notícia" : "Nova notícia";
+    if (submit) { submit.textContent = newsForm.id ? "Salvar alterações" : "Publicar notícia"; submit.onclick = newsHandleSave; }
+    if (!form) return;
+
+    form.innerHTML = newsModalBodyHtml();
+    newsBindModalEvents();
+  }
+
+  function newsModalBodyHtml() {
+    var f = newsForm;
+    var imgPreview = f.image_url ? '<img src="' + esc(f.image_url) + '" alt="Prévia" class="admin-img-preview" style="max-height:120px;border-radius:8px;margin-top:8px;display:block" />' : "";
+    var docsHtml = f.documents.map(function(d, i){
+      return '<div class="news-doc-row" data-idx="' + i + '"><input type="text" class="news-doc-label" data-idx="' + i + '" value="' + esc(d.label) + '" placeholder="Nome do documento" /><a href="' + esc(d.url) + '" target="_blank" style="font-size:.8rem;color:#4a6741">ver</a><button type="button" class="news-doc-remove" data-idx="' + i + '" style="color:#e53e3e;font-size:.8rem;background:none;border:none;cursor:pointer">remover</button></div>';
+    }).join("");
+    return '<label>Título *<input type="text" id="nf-title" value="' + esc(f.title) + '" /></label>' +
+      '<label>Tag / Categoria<input type="text" id="nf-tag" value="' + esc(f.tag) + '" placeholder="Ex.: PARCERIA, EDUCAÇÃO" /></label>' +
+      '<label>Resumo (aparece no card)<textarea id="nf-desc" rows="3">' + esc(f.description) + '</textarea></label>' +
+      '<label>Conteúdo completo do artigo<textarea id="nf-content" rows="8" placeholder="Texto completo — uma linha em branco entre parágrafos">' + esc(f.content) + '</textarea></label>' +
+      '<div class="admin-field"><span class="admin-field-label">Imagem de capa</span>' +
+      '<label class="admin-upload-btn" id="nf-img-label">' + (newsUploadingImg ? "Enviando..." : "📁 Escolher imagem") + '<input type="file" id="nf-img-file" accept="image/*" style="display:none" /></label>' +
+      '<input type="url" id="nf-img-url" value="' + esc(f.image_url) + '" placeholder="ou cole URL da imagem" />' + imgPreview + '</div>' +
+      '<label>Link Instagram — opcional<input type="url" id="nf-link" value="' + esc(f.link) + '" placeholder="https://instagram.com/p/..." /></label>' +
+      '<div class="admin-field"><span class="admin-field-label">Documentos para download — opcional</span>' + docsHtml +
+      '<label class="admin-upload-btn" id="nf-doc-label">' + (newsUploadingDoc ? "Enviando..." : "📎 Anexar PDF (pode adicionar vários)") + '<input type="file" id="nf-doc-file" accept=".pdf,.doc,.docx,application/pdf" style="display:none" /></label></div>';
+  }
+
+  function newsBindModalEvents() {
+    // image upload
+    var imgFile = $("#nf-img-file");
+    if (imgFile) imgFile.addEventListener("change", async function(){
+      var file = imgFile.files && imgFile.files[0];
+      if (!file) return;
+      newsUploadingImg = true; newsRenderModal();
+      try {
+        var path = "noticias/images/" + Date.now() + "." + file.name.split(".").pop().toLowerCase();
+        var up = await supabase.storage.from("media").upload(path, file, { cacheControl: "3600", upsert: false });
+        if (up.error) throw up.error;
+        var pub = supabase.storage.from("media").getPublicUrl(up.data.path);
+        newsForm.image_url = pub.data.publicUrl;
+      } catch(e){ toast("Erro no upload da imagem: " + e.message, "error"); }
+      newsUploadingImg = false; newsRenderModal();
+    });
+
+    // image url field sync
+    var imgUrl = $("#nf-img-url");
+    if (imgUrl) imgUrl.addEventListener("input", function(){ newsForm.image_url = imgUrl.value; });
+
+    // doc upload
+    var docFile = $("#nf-doc-file");
+    if (docFile) docFile.addEventListener("change", async function(){
+      var file = docFile.files && docFile.files[0];
+      if (!file) return;
+      newsUploadingDoc = true; newsRenderModal();
+      try {
+        var path = "noticias/docs/" + Date.now() + "." + file.name.split(".").pop().toLowerCase();
+        var up = await supabase.storage.from("media").upload(path, file, { cacheControl: "3600", upsert: false });
+        if (up.error) throw up.error;
+        var pub = supabase.storage.from("media").getPublicUrl(up.data.path);
+        var niceName = file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim();
+        newsForm.documents.push({ label: niceName || "Documento", url: pub.data.publicUrl });
+      } catch(e){ toast("Erro no upload do documento: " + e.message, "error"); }
+      newsUploadingDoc = false; newsRenderModal();
+    });
+
+    // doc label edits
+    $$(".news-doc-label").forEach(function(inp){
+      inp.addEventListener("input", function(){ var i = parseInt(inp.dataset.idx); if (newsForm.documents[i]) newsForm.documents[i].label = inp.value; });
+    });
+
+    // doc remove
+    $$(".news-doc-remove").forEach(function(btn){
+      btn.addEventListener("click", function(){ var i = parseInt(btn.dataset.idx); newsForm.documents.splice(i, 1); newsRenderModal(); });
+    });
+  }
+
+  async function newsHandleSave() {
+    // collect live field values before saving
+    var titleEl = $("#nf-title"); if (titleEl) newsForm.title = titleEl.value.trim();
+    var tagEl = $("#nf-tag"); if (tagEl) newsForm.tag = tagEl.value.trim();
+    var descEl = $("#nf-desc"); if (descEl) newsForm.description = descEl.value.trim();
+    var contentEl = $("#nf-content"); if (contentEl) newsForm.content = contentEl.value.trim();
+    var linkEl = $("#nf-link"); if (linkEl) newsForm.link = linkEl.value.trim();
+    var imgUrlEl = $("#nf-img-url"); if (imgUrlEl && imgUrlEl.value.trim()) newsForm.image_url = imgUrlEl.value.trim();
+
+    if (!newsForm.title) { toast("Título é obrigatório", "error"); return; }
+
+    var payload = { title: newsForm.title, description: newsForm.description || null, content: newsForm.content || null, image_url: newsForm.image_url || null, tag: newsForm.tag || null, link: newsForm.link || null, documents: newsForm.documents };
+
+    var resp;
+    if (newsForm.id) {
+      resp = await supabase.from("news").update(payload).eq("id", newsForm.id);
+    } else {
+      resp = await supabase.from("news").insert(payload);
+    }
+
+    if (resp.error) { toast("Erro ao salvar: " + resp.error.message, "error"); return; }
+    toast(newsForm.id ? "Notícia atualizada" : "Notícia publicada!", "success");
+    closeModal();
+    await loadNews();
+    await refreshCounts();
+  }
+
   /* --------------- DELETE / TOGGLE --------------- */
   async function deleteRecord(table, id) {
     var resp = await supabase.from(table).delete().eq("id", id);
@@ -782,6 +954,11 @@
 
     if (section === "dashboard") {
       loadDashboard();
+      return;
+    }
+
+    if (section === "news") {
+      await loadNews();
       return;
     }
 
@@ -853,6 +1030,9 @@
     saveGalleryImage: saveGalleryImage,
     saveDocument: saveDocument,
     saveSettings: saveSettings,
+    loadNews: loadNews,
+    newsOpenModal: newsOpenModal,
+    newsHandleSave: newsHandleSave,
     deleteRecord: deleteRecord,
     toggleActive: toggleActive,
     openModal: openModal,
