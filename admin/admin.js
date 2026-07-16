@@ -1,9 +1,9 @@
 /* ================================================================
-   ACEBA Admin: painel administrativo
+   D'Joana Admin: painel administrativo
    - Sem import/export, sem type=module
    - Usa window.supabaseClient (apenas anon key)
    - CRUD real: partners / projects / gallery_images /
-     transparency_documents / site_settings
+     transparency_documents / site_settings / news (c/ multi-PDF)
    ================================================================ */
 
 (function () {
@@ -804,15 +804,17 @@
     if (row) { newsForm = { id: row.id, title: row.title || "", description: row.description || "", content: row.content || "", image_url: row.image_url || "", tag: row.tag || "", link: row.link || "", documents: Array.isArray(row.documents) ? row.documents : [] }; }
     var modal = $("#adminModal");
     if (!modal) return;
-    modal.style.display = "flex";
     state.modal.isOpen = true;
+    state.modal.type = "news";
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
     newsRenderModal();
   }
 
   function newsRenderModal() {
     var form = $("#adminModalForm");
-    var submit = $('#adminModal [data-modal-submit]');
-    var modalTitle = $('#adminModal .admin-modal-title');
+    var submit = $("#adminModalSubmit");
+    var modalTitle = $("#adminModalTitle");
     if (modalTitle) modalTitle.textContent = newsForm.id ? "Editar notícia" : "Nova notícia";
     if (submit) { submit.textContent = newsForm.id ? "Salvar alterações" : "Publicar notícia"; submit.onclick = newsHandleSave; }
     if (!form) return;
