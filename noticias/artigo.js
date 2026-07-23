@@ -9,14 +9,6 @@
   var sb = null;
   try { sb = getSupabase(); } catch (e) {}
 
-  var MONTHS = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-
-  function formatDate(str) {
-    if (!str) return "";
-    var d = new Date(str);
-    return MONTHS[d.getMonth()] + " " + d.getFullYear();
-  }
-
   function esc(v) {
     return String(v || "")
       .replace(/&/g,"&amp;").replace(/</g,"&lt;")
@@ -45,7 +37,6 @@
     // meta
     text("artigo-tag",  news.tag || "Notícia");
     text("artigo-title", news.title);
-    text("artigo-date",  formatDate(news.created_at));
 
     // set page title
     document.title = esc(news.title) + " · Instituto Social D'Joana";
